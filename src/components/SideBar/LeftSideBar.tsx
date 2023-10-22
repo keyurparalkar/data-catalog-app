@@ -1,27 +1,41 @@
-import { Button } from "antd";
+import { Button, Menu } from "antd";
+import type { MenuProps } from "antd";
+
 import Sider from "antd/es/layout/Sider";
 
 const leftSiderStyle: React.CSSProperties = {
   backgroundColor: "white",
-  paddingLeft: 10,
-  paddingRight: 10,
 };
+
+type MenuItem = Required<MenuProps>["items"][number];
+
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode,
+  children?: MenuItem[],
+  type?: "group"
+): MenuItem {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  } as MenuItem;
+}
+
+const items: MenuItem[] = [
+  getItem("Customers", "1"),
+  getItem("Categories", "2"),
+  getItem("Employees", "3"),
+  getItem("Suppliers", "4"),
+];
 
 export const LeftSider = () => {
   return (
     <Sider style={leftSiderStyle}>
-      <Button type="text" block>
-        Customers
-      </Button>
-      <Button type="text" block>
-        Categories
-      </Button>
-      <Button type="text" block>
-        Employees
-      </Button>
-      <Button type="text" block>
-        Suppliers
-      </Button>
+      <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
     </Sider>
   );
 };

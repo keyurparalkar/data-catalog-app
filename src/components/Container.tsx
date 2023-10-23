@@ -6,15 +6,16 @@ import {
   Flex,
   Layout,
   Row,
-  Space,
   Tabs,
   TabsProps,
-  Tag,
 } from "antd";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql, SQLConfig, StandardSQL } from "@codemirror/lang-sql";
 import Columns from "./TabComponents/Columns";
 import QueryData from "./TabComponents/QueryData";
+import { useContext } from "react";
+import { DataContext } from "../store/providers";
+import CheckableTags from "./CheckableTags";
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -43,6 +44,7 @@ const tabItems: TabsProps["items"] = [
 ];
 
 const Container = () => {
+  const { predefinedQueries, query } = useContext(DataContext);
   return (
     <Layout.Content style={contentStyle}>
       <Card title="Query">
@@ -50,6 +52,7 @@ const Container = () => {
           <Col span={16}>
             <CodeMirror
               height="100px"
+              value={query}
               style={{ outline: "1px solid #cacaca" }}
               extensions={[sql(config)]}
             />
@@ -64,17 +67,7 @@ const Container = () => {
         </Row>
         <Divider />
         <Row>
-          {/* Replace below tags with checked tags with map function */}
-          <Col span={7}>
-            <Tag.CheckableTag checked>
-              SELECT * FROM Customers;
-            </Tag.CheckableTag>
-          </Col>
-          <Col span={7}>
-            <Tag.CheckableTag checked={false}>
-              SELECT name, year FROM Customers;
-            </Tag.CheckableTag>
-          </Col>
+          <CheckableTags predefinedQueries={predefinedQueries} />
         </Row>
         <Divider />
         <Tabs items={tabItems} />

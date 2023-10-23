@@ -1,4 +1,4 @@
-import { Card, Col, Flex, Row, Space, Table, Tag, Typography } from "antd";
+import { Card, Col, Flex, Row, Space, Tag, Typography } from "antd";
 import { UserOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 
 import Sider from "antd/es/layout/Sider";

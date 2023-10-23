@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Layout, Space, Typography } from "antd";
+import { Layout, Space, Typography } from "antd";
 import Body from "./components/Body";
-const { Header, Sider, Content } = Layout;
+const { Header } = Layout;
 
 const headerStyle: React.CSSProperties = {
   color: "#fff",

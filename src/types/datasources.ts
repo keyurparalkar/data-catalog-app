@@ -7,7 +7,7 @@ type EventDescriptor = {
 };
 
 export type MetaData = {
-  latestComment: EventDescriptor;
+  comments: EventDescriptor[];
   rowCount: number;
   columnCount: number;
   size: number;
@@ -22,4 +22,4 @@ export type DataSource = {
   meta: MetaData;
 };
 
-export type AllDataSources = DataSource[];
+// export type AllDataSources = DataSource[];

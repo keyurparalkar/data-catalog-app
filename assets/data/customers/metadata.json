@@ -1,0 +1,22 @@
+{
+    "comments": [
+        {
+            "description": "Notify before making changes",
+            "author": "Emilia",
+            "timestamp": "22/10/2023"
+        },
+        {
+            "description": "Do not use this source in PRODUCTION",
+            "author": "Ron",
+            "timestamp": "19/10/2023"
+        }
+    ],
+    "description": "Table that contains information about Customers",
+    "owners": ["Emilia", "Ron"],
+    "categories": ["PII", "Customers"],
+    "verified": {
+        "description": "This table is verfied",
+        "author": "Emilia",
+        "timestamp": "22/10/2023"
+    }
+}

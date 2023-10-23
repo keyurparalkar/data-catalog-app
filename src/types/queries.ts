@@ -5,7 +5,3 @@
 export type Query = string;
 
 export type PredefinedQueries = Query[];
-
-// TODO: Add saved queries
-
-// TODO: Add query history

@@ -1,10 +1,11 @@
-import { Card, Col, Flex, Row, Space, Tag, Typography } from "antd";
+import { Avatar, Card, Col, Flex, Row, Space, Tag, Typography } from "antd";
 import { UserOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 import dayjs from "dayjs";
 import Sider from "antd/es/layout/Sider";
 import { ReactElement, useContext } from "react";
 import { DataContext } from "../../store/providers";
 import { EventDescriptor, MetaData } from "../../types/datasources";
+import { tagColorMap } from "./utils";
 
 const { Text } = Typography;
 
@@ -79,6 +80,9 @@ const TableSummary = ({
   columnCount,
   description,
   verified,
+  categories,
+  owners,
+  comments,
 }: TableSummaryProps) => (
   <Space direction="vertical" size="middle" style={{ padding: 5 }}>
     <Row>
@@ -104,15 +108,15 @@ const TableSummary = ({
 
     <Row>
       <Flex justify="space-between" style={{ minWidth: "50%" }}>
-        <Text style={{ color: "#6A6F85" }}>Owner</Text>
-        <Tag style={{ borderRadius: "10px", backgroundColor: "white" }}>
-          <UserOutlined twoToneColor="#eb2f96" />
-          <Text>Rose</Text>
-        </Tag>
-        <Tag style={{ borderRadius: "10px", backgroundColor: "white" }}>
-          <UserOutlined twoToneColor="#eb2f96" />
-          <Text>Mark</Text>
-        </Tag>
+        <Space>
+          <Text style={{ color: "#6A6F85" }}>Owners</Text>
+          {owners.map((owner) => (
+            <Tag style={{ borderRadius: "10px", backgroundColor: "white" }}>
+              <UserOutlined twoToneColor="#eb2f96" />
+              <Text>{owner}</Text>
+            </Tag>
+          ))}
+        </Space>
       </Flex>
     </Row>
 
@@ -120,6 +124,17 @@ const TableSummary = ({
       <Flex vertical>
         <Text style={{ color: "#6A6F85" }}>Description</Text>
         <Text>{description}</Text>
+      </Flex>
+    </Row>
+
+    <Row>
+      <Flex vertical>
+        <Text style={{ color: "#6A6F85" }}>Tags</Text>
+        <Space>
+          {categories.map((category, idx) => (
+            <Tag color={tagColorMap[idx]}>{category}</Tag>
+          ))}
+        </Space>
       </Flex>
     </Row>
 
@@ -131,6 +146,27 @@ const TableSummary = ({
         titleIcon={<CheckCircleTwoTone twoToneColor="#4eb91d" />}
       />
     )}
+
+    <Row>
+      <Text style={{ color: "#6A6F85" }}>Comments</Text>
+      <Flex vertical style={{ height: 150, overflowY: "scroll" }}>
+        <Space direction="vertical">
+          {comments.map(({ description, author, timestamp }) => (
+            <Card>
+              <Card.Meta
+                avatar={
+                  <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
+                }
+                title={description}
+                description={`${author} ${dayjs(timestamp).format(
+                  "MMM DD, YYYY"
+                )}`}
+              />
+            </Card>
+          ))}
+        </Space>
+      </Flex>
+    </Row>
   </Space>
 );
 
@@ -140,7 +176,7 @@ const RightSider = () => {
   if (datasource) {
     const { comments } = datasource.meta;
     return (
-      <Sider style={rightSliderStyle} width="500px">
+      <Sider style={rightSliderStyle} width="450px">
         <Card style={{ borderRadius: "0" }} title="Datasource Overview">
           <InfoCard {...comments[0]} cardTitle="Information" cardType="info" />
           <TableSummary {...datasource.meta} />

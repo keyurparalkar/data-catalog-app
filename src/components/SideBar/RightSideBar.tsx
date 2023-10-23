@@ -21,8 +21,8 @@ const infoCardStyles: React.CSSProperties = {
 
 const verifyCardStyles: React.CSSProperties = {
   backgroundColor: "#f0ffe9",
-  padding: 10,
   borderRadius: "10px",
+  height: 150,
   border: "1px solid #9EDE81",
 };
 
@@ -132,19 +132,6 @@ const TableSummary = ({
         cardType="verify"
         titleIcon={<CheckCircleTwoTone twoToneColor="#4eb91d" />}
       />
-      // <Flex vertical gap="small">
-      //   <Space>
-      // <CheckCircleTwoTone twoToneColor="#4eb91d" />
-      //     <Text style={{ color: "#6A6F85" }}>Verified</Text>
-      //   </Space>
-      //   <Text>{verified.description}</Text>
-      //   <Flex>
-      //     <Space>
-      //       <UserOutlined twoToneColor="#eb2f96" />
-      //       <Text>{verified.author}</Text>
-      //     </Space>
-      //   </Flex>
-      // </Flex>
     )}
   </Space>
 );

@@ -3,12 +3,12 @@
         {
             "description": "Notify before making changes",
             "author": "Emilia",
-            "timestamp": "2023-10-22"
+            "timestamp": "2023-10-23"
         },
         {
             "description": "Do not use this source in PRODUCTION",
             "author": "Ron",
-            "timestamp": "2023-10-19"
+            "timestamp": "19/10/2023"
         }
     ],
     "description": "Table that contains information about Customers",
@@ -17,17 +17,17 @@
     "verified": {
         "description": "This table is verfied",
         "author": "Emilia",
-        "timestamp": "2023-10-22"
+        "timestamp": "2023-10-23"
     },
     "fields": [],
-    "query": "SELECT * FROM Customers;",
+    "query": "SELECT * FROM Categories;",
     "predefinedQueries": [
-        "SELECT * FROM Customers;",
-        "SELECT contactName, contactTitle FROM Customers;"
+        "SELECT * FROM Categories;",
+        "SELECT categoryID, categoryName FROM Categories;"
       ],
     "queryColumnMap": {
-        "SELECT * FROM Customers;": ["*"],
-        "SELECT contactName, contactTitle FROM Customers;":["contactName", "contactTitle"]
+        "SELECT * FROM Categories;": ["*"],
+        "SELECT categoryID, categoryName FROM Categories;":["categoryID", "categoryName"]
     },
     "size": "11 kB",
     "rowCount": 22,

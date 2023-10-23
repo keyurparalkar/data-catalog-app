@@ -22,6 +22,7 @@ export type MetaData = {
   fields: string[] | [];
   predefinedQueries: PredefinedQueries;
   queryColumnMap: Record<string, string[]>;
+  query: Query;
 };
 
 export type DataSource = {

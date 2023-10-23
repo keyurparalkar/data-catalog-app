@@ -12,7 +12,9 @@ const Body = () => {
 
   useEffect(() => {
     (async () => {
-      const filePath = "./assets/data/customers/metadata.json";
+      const filePath = `./assets/data/${
+        datasource?.name ?? "customers"
+      }/metadata.json`;
       try {
         const resp = await fetch(filePath);
         const metaData = await resp.json();

@@ -1,5 +1,10 @@
 import { GlobalStateProps } from ".";
-import { LOAD_META_DATA, RUN_QUERY, SELECT_QUERY } from "./actions";
+import {
+  LOAD_META_DATA,
+  RUN_QUERY,
+  SELECT_QUERY,
+  SELECT_TABLE,
+} from "./actions";
 
 export type ActionProps = {
   type: string;
@@ -26,7 +31,16 @@ export const dataReducer = (
     }
 
     case SELECT_QUERY: {
-      return { ...state, query: actions.payload };
+      return {
+        ...state,
+        datasource: {
+          ...state.datasource,
+          meta: {
+            ...state.datasource.meta,
+            query: actions.payload,
+          },
+        },
+      };
     }
 
     case LOAD_META_DATA: {
@@ -35,6 +49,16 @@ export const dataReducer = (
         datasource: {
           ...state.datasource,
           meta: actions.payload,
+        },
+      };
+    }
+
+    case SELECT_TABLE: {
+      return {
+        ...state,
+        datasource: {
+          ...state.datasource,
+          name: actions.payload,
         },
       };
     }

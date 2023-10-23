@@ -4,7 +4,7 @@ import { Query, PredefinedQueries } from "../types/queries";
 export type GlobalStateProps = {
   query: Query;
   predefinedQueries: PredefinedQueries;
-  datasource: DataSource | [];
+  datasource: DataSource;
 };
 
 export const intialState: GlobalStateProps = {
@@ -13,5 +13,5 @@ export const intialState: GlobalStateProps = {
     "SELECT * FROM Customers;",
     "SELECT name, year FROM Customers",
   ],
-  datasource: [],
+  datasource: [] as unknown as DataSource,
 };

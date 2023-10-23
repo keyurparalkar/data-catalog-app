@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   Button,
   Card,
@@ -11,13 +12,13 @@ import {
 } from "antd";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql, SQLConfig, StandardSQL } from "@codemirror/lang-sql";
+import papaparse from "papaparse";
+
 import Columns from "./TabComponents/Columns";
 import QueryData from "./TabComponents/QueryData";
-import { useContext, useState } from "react";
 import { DataContext, DataDispatchContext } from "../store/providers";
 import CheckableTags from "./CheckableTags";
-import { SELECT_QUERY } from "../store/actions";
-import { Query } from "../types/queries";
+import { RUN_QUERY, SELECT_QUERY } from "../store/actions";
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -57,6 +58,28 @@ const Container = () => {
     onQueryChange(predefinedQueries[0]);
   };
 
+  const runQuery = () => {
+    const filePath = "../../assets/data/customers/customers.csv";
+
+    papaparse.parse(filePath, {
+      download: true,
+      header: true,
+      delimiter: ",",
+      complete: (results) => {
+        dispatch({
+          type: RUN_QUERY,
+          payload: {
+            data: results.data,
+            meta: {
+              fields: results.meta.fields,
+            },
+          },
+        });
+      },
+      error: (err: unknown) => console.error(err),
+    });
+  };
+
   return (
     <Layout.Content style={contentStyle}>
       <Card title="Query">
@@ -72,7 +95,9 @@ const Container = () => {
           <Col span={1} />
           <Col span={7}>
             <Flex vertical justify={"space-between"} gap="middle">
-              <Button type="primary">Run Query</Button>
+              <Button type="primary" onClick={runQuery}>
+                Run Query
+              </Button>
               <Button onClick={resetToDefaultQuery}>Reset</Button>
             </Flex>
           </Col>

@@ -1,19 +1,6 @@
 import { Table } from "antd";
-
-const dataSource = [
-  {
-    key: "1",
-    colName: "Country",
-    dataType: "VARCHAR",
-    desp: "Name of the country",
-  },
-  {
-    key: "2",
-    colName: "Population",
-    dataType: "NUMBER",
-    desp: "Population of the country",
-  },
-];
+import { useContext } from "react";
+import { DataContext } from "../../store/providers";
 
 const columns = [
   {
@@ -21,20 +8,24 @@ const columns = [
     dataIndex: "colName",
     key: "colName",
   },
-  {
-    title: "Data Type",
-    dataIndex: "dataType",
-    key: "dataType",
-  },
-  {
-    title: "Description",
-    dataIndex: "desp",
-    key: "desp",
-  },
 ];
 
 const Columns = () => {
-  return <Table dataSource={dataSource} columns={columns} />;
+  const { datasource } = useContext(DataContext);
+
+  const data = datasource?.meta?.fields.map((field) => ({
+    colName: field,
+  }));
+
+  return (
+    <Table
+      dataSource={data ?? []}
+      columns={columns}
+      pagination={{ pageSize: 20, hideOnSinglePage: true }}
+      scroll={{ y: 200 }}
+      size="small"
+    />
+  );
 };
 
 export default Columns;

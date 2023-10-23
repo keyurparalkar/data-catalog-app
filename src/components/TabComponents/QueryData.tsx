@@ -1,40 +1,22 @@
 import { Table } from "antd";
-
-const dataSource = [
-  {
-    key: "1",
-    colName: "Country",
-    dataType: "VARCHAR",
-    desp: "Name of the country",
-  },
-  {
-    key: "2",
-    colName: "Population",
-    dataType: "NUMBER",
-    desp: "Population of the country",
-  },
-];
-
-const columns = [
-  {
-    title: "Column Name",
-    dataIndex: "colName",
-    key: "colName",
-  },
-  {
-    title: "Data Type",
-    dataIndex: "dataType",
-    key: "dataType",
-  },
-  {
-    title: "Description",
-    dataIndex: "desp",
-    key: "desp",
-  },
-];
+import { useContext } from "react";
+import { DataContext } from "../../store/providers";
+import { generateColumns } from "./utils";
 
 const QueryData = () => {
-  return <Table dataSource={dataSource} columns={columns} />;
+  const { datasource } = useContext(DataContext);
+  const { data, meta } = datasource;
+  const fields = generateColumns(meta?.fields ?? []);
+
+  return (
+    <Table
+      dataSource={data ?? []}
+      columns={fields}
+      pagination={{ pageSize: 4 }}
+      scroll={{ x: 400 }}
+      size="small"
+    />
+  );
 };
 
 export default QueryData;

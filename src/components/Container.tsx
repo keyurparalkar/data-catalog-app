@@ -47,7 +47,7 @@ const tabItems: TabsProps["items"] = [
 ];
 
 const Container = () => {
-  const { predefinedQueries, query } = useContext(DataContext);
+  const { predefinedQueries, query, datasource } = useContext(DataContext);
   const dispatch = useContext(DataDispatchContext);
 
   const onQueryChange = (query: string) => {
@@ -66,12 +66,31 @@ const Container = () => {
       header: true,
       delimiter: ",",
       complete: (results) => {
+        // Get columns based on the query columns meta field:
+        let { data, meta } = results;
+
+        const queryColumns = datasource.meta.queryColumnMap[query];
+        if (queryColumns[0] !== "*") {
+          // get data only for the specififed columns;
+          data = (data as Array<Record<string, unknown>>).map((item) => {
+            const obj: Record<string, unknown> = {};
+
+            queryColumns.forEach((key) => {
+              if (key in item) {
+                // Checks if query column is present in data
+                obj[key] = item[key];
+              }
+            });
+            return obj;
+          });
+        }
+
         dispatch({
           type: RUN_QUERY,
           payload: {
-            data: results.data,
+            data: data,
             meta: {
-              fields: results.meta.fields,
+              fields: meta.fields,
             },
           },
         });

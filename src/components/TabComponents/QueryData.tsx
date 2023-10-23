@@ -5,8 +5,8 @@ import { generateColumns } from "./utils";
 
 const QueryData = () => {
   const { datasource } = useContext(DataContext);
-  const { data, meta } = datasource;
-  const fields = generateColumns(meta?.fields ?? []);
+  const { data } = datasource;
+  const fields = generateColumns(Object.keys(data[0]) ?? []);
 
   return (
     <Table

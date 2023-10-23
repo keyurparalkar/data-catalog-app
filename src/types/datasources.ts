@@ -1,3 +1,5 @@
+import { PredefinedQueries, Query } from "./queries";
+
 export type Data = any[];
 
 type DataSourceName = string;
@@ -18,6 +20,8 @@ export type MetaData = {
   categories: string[];
   verified?: EventDescriptor;
   fields: string[] | [];
+  predefinedQueries: PredefinedQueries;
+  queryColumnMap: Record<string, string[]>;
 };
 
 export type DataSource = {

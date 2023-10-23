@@ -13,7 +13,7 @@ const columns = [
 const Columns = () => {
   const { datasource } = useContext(DataContext);
 
-  const data = datasource?.meta?.fields.map((field) => ({
+  const data = Object.keys(datasource.data[0]).map((field) => ({
     colName: field,
   }));
 

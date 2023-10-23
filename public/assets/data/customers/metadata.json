@@ -19,5 +19,13 @@
         "author": "Emilia",
         "timestamp": "22/10/2023"
     },
-    "fields": []
+    "fields": [],
+    "predefinedQueries": [
+        "SELECT * FROM Customers;",
+        "SELECT contactName, contactTitle FROM Customers;"
+      ],
+    "queryColumnMap": {
+        "SELECT * FROM Customers;": ["*"],
+        "SELECT contactName, contactTitle FROM Customers;":["contactName", "contactTitle"]
+    }
 }

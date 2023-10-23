@@ -1,23 +1,27 @@
 import { Col, Tag } from "antd";
-import { useState } from "react";
 import { PredefinedQueries, Query } from "../types/queries";
+
+type CheckableTagsProps = {
+  predefinedQueries: PredefinedQueries;
+  onQueryChange: (query: string) => void;
+  currentQuery: Query;
+};
 
 const CheckableTags = ({
   predefinedQueries,
-}: {
-  predefinedQueries: PredefinedQueries;
-}) => {
-  const [selectedTag, setSelectedTag] = useState<Query>(predefinedQueries[0]);
-
+  onQueryChange,
+  currentQuery,
+}: CheckableTagsProps) => {
   const handleChange = (query: string) => {
-    setSelectedTag(query);
+    onQueryChange(query);
   };
+
   return (
     <>
       {predefinedQueries.map((query: Query, index: number) => (
         <Col span={7} key={`tag-key-${index}`}>
           <Tag.CheckableTag
-            checked={selectedTag === query}
+            checked={currentQuery === query}
             onChange={() => handleChange(query)}
           >
             {query}

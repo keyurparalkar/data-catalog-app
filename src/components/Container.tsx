@@ -13,9 +13,11 @@ import CodeMirror from "@uiw/react-codemirror";
 import { sql, SQLConfig, StandardSQL } from "@codemirror/lang-sql";
 import Columns from "./TabComponents/Columns";
 import QueryData from "./TabComponents/QueryData";
-import { useContext } from "react";
-import { DataContext } from "../store/providers";
+import { useContext, useState } from "react";
+import { DataContext, DataDispatchContext } from "../store/providers";
 import CheckableTags from "./CheckableTags";
+import { SELECT_QUERY } from "../store/actions";
+import { Query } from "../types/queries";
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -45,6 +47,16 @@ const tabItems: TabsProps["items"] = [
 
 const Container = () => {
   const { predefinedQueries, query } = useContext(DataContext);
+  const dispatch = useContext(DataDispatchContext);
+
+  const onQueryChange = (query: string) => {
+    dispatch({ type: SELECT_QUERY, payload: query });
+  };
+
+  const resetToDefaultQuery = () => {
+    onQueryChange(predefinedQueries[0]);
+  };
+
   return (
     <Layout.Content style={contentStyle}>
       <Card title="Query">
@@ -61,13 +73,17 @@ const Container = () => {
           <Col span={7}>
             <Flex vertical justify={"space-between"} gap="middle">
               <Button type="primary">Run Query</Button>
-              <Button>Reset</Button>
+              <Button onClick={resetToDefaultQuery}>Reset</Button>
             </Flex>
           </Col>
         </Row>
         <Divider />
         <Row>
-          <CheckableTags predefinedQueries={predefinedQueries} />
+          <CheckableTags
+            predefinedQueries={predefinedQueries}
+            currentQuery={query}
+            onQueryChange={onQueryChange}
+          />
         </Row>
         <Divider />
         <Tabs items={tabItems} />

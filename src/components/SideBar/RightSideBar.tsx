@@ -1,6 +1,6 @@
 import { Card, Col, Flex, Row, Space, Tag, Typography } from "antd";
 import { UserOutlined, CheckCircleTwoTone } from "@ant-design/icons";
-
+import dayjs from "dayjs";
 import Sider from "antd/es/layout/Sider";
 import { ReactElement, useContext } from "react";
 import { DataContext } from "../../store/providers";
@@ -66,10 +66,8 @@ const InfoCard = ({
           <Text>{author}</Text>
         </Space>
       </Col>
-      <Col span={12}>
-        <Text style={{ textAlign: "end" }}>
-          {new Date(timestamp).toLocaleString()}
-        </Text>
+      <Col span={12} style={{ textAlign: "end" }}>
+        <Text>{dayjs(timestamp).format("MMM DD, YYYY")}</Text>
       </Col>
     </Row>
   </Card>

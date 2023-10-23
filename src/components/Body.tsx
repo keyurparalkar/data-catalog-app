@@ -21,7 +21,8 @@ const Body = () => {
         console.log({ err });
       }
     })();
-  }, [datasource.name]);
+    // eslint-disable-next-line
+  }, [datasource?.name]);
 
   return (
     <Layout hasSider>

@@ -61,42 +61,44 @@ const Container = () => {
   const runQuery = () => {
     const filePath = "./assets/data/customers/customers.csv";
 
-    papaparse.parse(filePath, {
-      download: true,
-      header: true,
-      delimiter: ",",
-      complete: (results) => {
-        // Get columns based on the query columns meta field:
-        let { data, meta } = results;
+    if (datasource?.meta) {
+      papaparse.parse(filePath, {
+        download: true,
+        header: true,
+        delimiter: ",",
+        complete: (results) => {
+          // Get columns based on the query columns meta field:
+          let { data, meta } = results;
+          const queryColumns = datasource.meta.queryColumnMap[query];
+          if (queryColumns[0] !== "*") {
+            // get data only for the specififed columns;
+            data = (data as Array<Record<string, unknown>>).map((item) => {
+              const obj: Record<string, unknown> = {};
 
-        const queryColumns = datasource.meta.queryColumnMap[query];
-        if (queryColumns[0] !== "*") {
-          // get data only for the specififed columns;
-          data = (data as Array<Record<string, unknown>>).map((item) => {
-            const obj: Record<string, unknown> = {};
-
-            queryColumns.forEach((key) => {
-              if (key in item) {
-                // Checks if query column is present in data
-                obj[key] = item[key];
-              }
+              queryColumns.forEach((key) => {
+                if (key in item) {
+                  // Checks if query column is present in data
+                  obj[key] = item[key];
+                }
+              });
+              return obj;
             });
-            return obj;
-          });
-        }
+          }
 
-        dispatch({
-          type: RUN_QUERY,
-          payload: {
-            data: data,
-            meta: {
-              fields: meta.fields,
+          // Check if this is needed: meta
+          dispatch({
+            type: RUN_QUERY,
+            payload: {
+              data: data,
+              meta: {
+                fields: meta.fields,
+              },
             },
-          },
-        });
-      },
-      error: (err: unknown) => console.error(err),
-    });
+          });
+        },
+        error: (err: unknown) => console.error(err),
+      });
+    }
   };
 
   return (

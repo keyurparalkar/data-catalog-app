@@ -2,6 +2,9 @@ import { Card, Col, Flex, Row, Space, Tag, Typography } from "antd";
 import { UserOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 
 import Sider from "antd/es/layout/Sider";
+import { ReactElement, useContext } from "react";
+import { DataContext } from "../../store/providers";
+import { EventDescriptor, MetaData } from "../../types/datasources";
 
 const { Text } = Typography;
 
@@ -16,14 +19,43 @@ const infoCardStyles: React.CSSProperties = {
   border: "1px solid #9cbffa",
 };
 
-const InfoCard = () => (
-  <Card size="small" style={infoCardStyles}>
+const verifyCardStyles: React.CSSProperties = {
+  backgroundColor: "#f0ffe9",
+  padding: 10,
+  borderRadius: "10px",
+  border: "1px solid #9EDE81",
+};
+
+type InforCardProps = EventDescriptor & {
+  cardTitle: string;
+  cardType: "info" | "verify";
+  titleIcon?: ReactElement;
+};
+type TableSummaryProps = MetaData;
+
+const InfoCard = ({
+  description,
+  author,
+  timestamp,
+  cardTitle,
+  titleIcon,
+  cardType = "info",
+}: InforCardProps) => (
+  <Card
+    size="small"
+    style={cardType === "info" ? infoCardStyles : verifyCardStyles}
+  >
     <Row>
-      <Text>Information</Text>
+      <Space>
+        <>
+          {titleIcon}
+          <Text>{cardTitle}</Text>
+        </>
+      </Space>
     </Row>
     <br />
     <Row>
-      <Text strong>This table powers customer data</Text>
+      <Text strong>{description}</Text>
     </Row>
     <br />
 
@@ -31,35 +63,43 @@ const InfoCard = () => (
       <Col span={12}>
         <Space>
           <UserOutlined />
-          <Text>User name</Text>
+          <Text>{author}</Text>
         </Space>
       </Col>
       <Col span={12}>
-        <Text style={{ textAlign: "end" }}>{new Date().toLocaleString()}</Text>
+        <Text style={{ textAlign: "end" }}>
+          {new Date(timestamp).toLocaleString()}
+        </Text>
       </Col>
     </Row>
   </Card>
 );
 
-const TableSummary = () => (
+const TableSummary = ({
+  rowCount,
+  size,
+  columnCount,
+  description,
+  verified,
+}: TableSummaryProps) => (
   <Space direction="vertical" size="middle" style={{ padding: 5 }}>
     <Row>
       <Col span={8}>
         <Flex vertical>
-          <Text style={{ color: "#6A6F85" }}>Row</Text>
-          <Text>2,123,131</Text>
+          <Text style={{ color: "#6A6F85" }}>Rows</Text>
+          <Text>{rowCount}</Text>
         </Flex>
       </Col>
       <Col span={8}>
         <Flex vertical>
           <Text style={{ color: "#6A6F85" }}>Columns</Text>
-          <Text>15</Text>
+          <Text>{columnCount}</Text>
         </Flex>
       </Col>
       <Col span={8}>
         <Flex vertical>
           <Text style={{ color: "#6A6F85" }}>Size</Text>
-          <Text>52 MB</Text>
+          <Text>{size}</Text>
         </Flex>
       </Col>
     </Row>
@@ -79,47 +119,53 @@ const TableSummary = () => (
     </Row>
 
     <Row>
-      <Text style={{ color: "#6A6F85" }}>Description</Text>
-      <Text>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti
-        dolore blanditiis nisi mollitia et repellendus consectetur fugit. Quae
-        laboriosam numquam quis unde totam non architecto, minus hic, quasi
-        eaque nisi.
-      </Text>
+      <Flex vertical>
+        <Text style={{ color: "#6A6F85" }}>Description</Text>
+        <Text>{description}</Text>
+      </Flex>
     </Row>
 
-    <Row
-      style={{
-        backgroundColor: "#f0ffe9",
-        padding: 10,
-        borderRadius: "10px",
-        border: "1px solid #9EDE81",
-      }}
-    >
-      <Space>
-        <CheckCircleTwoTone twoToneColor="#4eb91d" />
-        <Text style={{ color: "#6A6F85" }}>Verified</Text>
-      </Space>
-      <Text>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti
-        dolore blanditiis nisi mollitia et repellendus consectetur fugit. Quae
-        laboriosam numquam quis unde totam non architecto, minus hic, quasi
-        eaque nisi.
-      </Text>
-    </Row>
+    {verified && (
+      <InfoCard
+        {...verified}
+        cardTitle="Verified"
+        cardType="verify"
+        titleIcon={<CheckCircleTwoTone twoToneColor="#4eb91d" />}
+      />
+      // <Flex vertical gap="small">
+      //   <Space>
+      // <CheckCircleTwoTone twoToneColor="#4eb91d" />
+      //     <Text style={{ color: "#6A6F85" }}>Verified</Text>
+      //   </Space>
+      //   <Text>{verified.description}</Text>
+      //   <Flex>
+      //     <Space>
+      //       <UserOutlined twoToneColor="#eb2f96" />
+      //       <Text>{verified.author}</Text>
+      //     </Space>
+      //   </Flex>
+      // </Flex>
+    )}
   </Space>
 );
 
 const RightSider = () => {
-  // const {} = useCon;
-  return (
-    <Sider style={rightSliderStyle} width="500px">
-      <Card style={{ borderRadius: "0" }} title="Datasource Overview">
-        <InfoCard />
-        <TableSummary />
-      </Card>
-    </Sider>
-  );
+  const { datasource } = useContext(DataContext);
+
+  if (datasource) {
+    const { comments } = datasource.meta;
+    return (
+      <Sider style={rightSliderStyle} width="500px">
+        <Card style={{ borderRadius: "0" }} title="Datasource Overview">
+          <InfoCard {...comments[0]} cardTitle="Information" cardType="info" />
+          <TableSummary {...datasource.meta} />
+        </Card>
+      </Sider>
+    );
+  }
+
+  // TODO: Change this later
+  return <></>;
 };
 
 export default RightSider;

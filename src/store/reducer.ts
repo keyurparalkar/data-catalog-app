@@ -18,7 +18,7 @@ export const dataReducer = (
           ...state.datasource,
           data: actions.payload.data,
           meta: {
-            ...state.datasource.meta,
+            ...state.datasource?.meta,
             fields: actions.payload.meta.fields,
           },
         },

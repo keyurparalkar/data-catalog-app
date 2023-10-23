@@ -27,5 +27,8 @@
     "queryColumnMap": {
         "SELECT * FROM Customers;": ["*"],
         "SELECT contactName, contactTitle FROM Customers;":["contactName", "contactTitle"]
-    }
+    },
+    "size": "11 kB",
+    "rowCount": 22,
+    "columnCount": 11
 }

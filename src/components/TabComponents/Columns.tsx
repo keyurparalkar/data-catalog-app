@@ -12,10 +12,13 @@ const columns = [
 
 const Columns = () => {
   const { datasource } = useContext(DataContext);
+  let data;
 
-  const data = Object.keys(datasource.data[0]).map((field) => ({
-    colName: field,
-  }));
+  if (datasource && "data" in datasource) {
+    data = Object.keys(datasource.data[0]).map((field) => ({
+      colName: field,
+    }));
+  }
 
   return (
     <Table

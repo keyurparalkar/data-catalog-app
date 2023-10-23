@@ -13,5 +13,5 @@ export const intialState: GlobalStateProps = {
     "SELECT * FROM Customers;",
     "SELECT contactName, contactTitle FROM Customers;",
   ],
-  datasource: [] as unknown as DataSource,
+  datasource: undefined as any,
 };

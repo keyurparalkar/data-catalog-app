@@ -4,7 +4,7 @@ export type Data = any[];
 
 type DataSourceName = string;
 
-type EventDescriptor = {
+export type EventDescriptor = {
   description: string;
   author: string;
   timestamp: string;

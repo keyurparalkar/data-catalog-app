@@ -5,8 +5,11 @@ import { generateColumns } from "./utils";
 
 const QueryData = () => {
   const { datasource } = useContext(DataContext);
-  const { data } = datasource;
-  const fields = generateColumns(Object.keys(data[0]) ?? []);
+  let data, fields;
+  if (datasource && "data" in datasource) {
+    data = datasource.data;
+    fields = generateColumns(Object.keys(data[0]) ?? []);
+  }
 
   return (
     <Table

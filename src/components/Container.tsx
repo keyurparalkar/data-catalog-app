@@ -59,7 +59,7 @@ const Container = () => {
   };
 
   const runQuery = () => {
-    const filePath = "../../assets/data/customers/customers.csv";
+    const filePath = "./assets/data/customers/customers.csv";
 
     papaparse.parse(filePath, {
       download: true,

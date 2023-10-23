@@ -1,5 +1,5 @@
 import { GlobalStateProps } from ".";
-import { RUN_QUERY, SELECT_QUERY } from "./actions";
+import { LOAD_META_DATA, RUN_QUERY, SELECT_QUERY } from "./actions";
 
 export type ActionProps = {
   type: string;
@@ -11,7 +11,7 @@ export const dataReducer = (
   actions: ActionProps
 ): GlobalStateProps => {
   switch (actions.type) {
-    case RUN_QUERY:
+    case RUN_QUERY: {
       return {
         ...state,
         datasource: {
@@ -23,9 +23,21 @@ export const dataReducer = (
           },
         },
       };
+    }
 
-    case SELECT_QUERY:
+    case SELECT_QUERY: {
       return { ...state, query: actions.payload };
+    }
+
+    case LOAD_META_DATA: {
+      return {
+        ...state,
+        datasource: {
+          ...state.datasource,
+          meta: actions.payload,
+        },
+      };
+    }
 
     default:
       return state;

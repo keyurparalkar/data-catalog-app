@@ -1,20 +1,17 @@
-import { Button, Card, Input } from "antd";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { Button, Card, Empty, Input } from "antd";
 import rehypeStringify from "rehype-stringify";
-
 import Markdown from "react-markdown";
 import { EditOutlined } from "@ant-design/icons";
-import { ChangeEvent, useContext, useState } from "react";
+
 import { DataContext } from "../../store/providers";
 import { replaceNewLineChar } from "./utils";
 
-const Notes = () => {
+const Readme = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { datasource } = useContext(DataContext);
-  const transformedText = replaceNewLineChar(
-    datasource?.meta?.documentation || ""
-  );
 
-  const [text, setText] = useState(transformedText);
+  const [text, setText] = useState("");
 
   const onEditClick = () => {
     setIsEditing(!isEditing);
@@ -23,6 +20,16 @@ const Notes = () => {
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
+
+  useEffect(() => {
+    const transformedText = replaceNewLineChar(
+      datasource?.meta?.documentation || ""
+    );
+    setText(transformedText);
+  }, [datasource?.meta?.documentation]);
+
+  if (text === "") return <Empty />;
+
   return (
     <Card
       headStyle={{
@@ -56,4 +63,4 @@ const Notes = () => {
   );
 };
 
-export default Notes;
+export default Readme;

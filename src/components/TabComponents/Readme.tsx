@@ -9,7 +9,8 @@ import { replaceNewLineChar } from "./utils";
 
 const Readme = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const { datasource } = useContext(DataContext);
+  const { datasources, selectedTable } = useContext(DataContext);
+  const currentDataSource = datasources[selectedTable];
 
   const [text, setText] = useState("");
 
@@ -23,10 +24,10 @@ const Readme = () => {
 
   useEffect(() => {
     const transformedText = replaceNewLineChar(
-      datasource?.meta?.documentation || ""
+      currentDataSource?.meta?.documentation || ""
     );
     setText(transformedText);
-  }, [datasource?.meta?.documentation]);
+  }, [currentDataSource?.meta?.documentation]);
 
   if (text === "") return <Empty />;
 

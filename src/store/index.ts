@@ -1,9 +1,13 @@
 import { DataSource } from "../types/datasources";
 
+type TableAccessor = DataSource["name"];
+
 export type GlobalStateProps = {
-  datasource: DataSource;
+  datasources: Record<TableAccessor, DataSource>;
+  selectedTable: TableAccessor;
 };
 
 export const intialState: GlobalStateProps = {
-  datasource: undefined as any,
+  datasources: undefined as any,
+  selectedTable: "customers",
 };

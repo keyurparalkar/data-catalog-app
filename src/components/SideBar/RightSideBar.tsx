@@ -164,15 +164,16 @@ const TableSummary = ({
 );
 
 const RightSider = () => {
-  const { datasource } = useContext(DataContext);
+  const { datasources, selectedTable } = useContext(DataContext);
 
-  if (datasource) {
-    const { comments } = datasource.meta;
+  if (datasources?.[selectedTable]) {
+    const currentDataSource = datasources[selectedTable];
+    const { comments } = currentDataSource.meta;
     return (
       <Sider style={rightSliderStyle} width="450px">
         <Card style={{ borderRadius: "0" }} title="Datasource Overview">
           <InfoCard {...comments[0]} cardTitle="Information" cardType="info" />
-          <TableSummary {...datasource.meta} />
+          <TableSummary {...currentDataSource.meta} />
         </Card>
       </Sider>
     );

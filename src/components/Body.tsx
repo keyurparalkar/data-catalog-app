@@ -8,18 +8,22 @@ import RightSider from "./SideBar/RightSideBar";
 import { fetchMetaData } from "./utils";
 
 const Body = () => {
-  const { datasource } = useContext(DataContext);
+  const { datasources, selectedTable } = useContext(DataContext);
   const dispatch = useContext(DataDispatchContext);
 
   const fetchAndStoreMetaData = async (assetName: string) => {
     const metaData = await fetchMetaData(assetName);
-    dispatch({ type: LOAD_META_DATA, payload: metaData });
+    dispatch({ type: LOAD_META_DATA, payload: { metaData, selectedTable } });
   };
 
   useEffect(() => {
-    fetchAndStoreMetaData(datasource?.name);
+    // bail out if selectedTable is already in Datasources
+    if (datasources && selectedTable in datasources) return;
+
+    fetchAndStoreMetaData(selectedTable);
+
     // eslint-disable-next-line
-  }, [datasource?.name]);
+  }, [selectedTable]);
 
   return (
     <Layout hasSider>

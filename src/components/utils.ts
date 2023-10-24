@@ -8,3 +8,19 @@ export const fetchMetaData = async (assetName: string) => {
     console.log({ err });
   }
 };
+
+type ResponseItem = Record<string, unknown>;
+export type Response = Array<ResponseItem>;
+
+export const getDataByColumns = (data: Response, queryColumns: string[]) => {
+  return data.map((item) => {
+    const obj: ResponseItem = {};
+
+    queryColumns.forEach((key) => {
+      if (key in item) {
+        obj[key] = item[key];
+      }
+    });
+    return obj;
+  });
+};

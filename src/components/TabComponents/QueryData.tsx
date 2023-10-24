@@ -4,10 +4,12 @@ import { DataContext } from "../../store/providers";
 import { generateColumns } from "./utils";
 
 const QueryData = () => {
-  const { datasource } = useContext(DataContext);
+  const { datasources, selectedTable } = useContext(DataContext);
+  const currentDataSource = datasources?.[selectedTable];
   let data, fields;
-  if (datasource && "data" in datasource) {
-    data = datasource.data;
+
+  if (currentDataSource && currentDataSource?.data) {
+    data = currentDataSource.data;
     fields = generateColumns(Object.keys(data[0]) ?? []);
   }
 

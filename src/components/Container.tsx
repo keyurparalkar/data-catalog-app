@@ -20,6 +20,7 @@ import { DataContext, DataDispatchContext } from "../store/providers";
 import CheckableTags from "./CheckableTags";
 import { RUN_QUERY, SELECT_QUERY } from "../store/actions";
 import Readme from "./TabComponents/Readme";
+import { getDataByColumns, Response } from "./utils";
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -53,11 +54,12 @@ const tabItems: TabsProps["items"] = [
 ];
 
 const Container = () => {
-  const { datasource } = useContext(DataContext);
+  const { datasources, selectedTable } = useContext(DataContext);
   const dispatch = useContext(DataDispatchContext);
 
-  if (datasource) {
-    const { predefinedQueries, query } = datasource.meta;
+  if (datasources?.[selectedTable]) {
+    const { name, meta: storeMeta } = datasources[selectedTable];
+    const { predefinedQueries, query, queryColumnMap } = storeMeta;
     const onQueryChange = (query: string) => {
       dispatch({ type: SELECT_QUERY, payload: query });
     };
@@ -66,44 +68,35 @@ const Container = () => {
       onQueryChange(predefinedQueries[0]);
     };
 
-    const runQuery = () => {
-      const filePath = `./assets/data/${datasource.name}/${datasource.name}.csv`;
+    const onParsingComplete = (results: papaparse.ParseResult<unknown>) => {
+      let { data, meta } = results;
+      const queryColumns = queryColumnMap[query];
+      if (queryColumns[0] !== "*") {
+        // get data only for the specififed columns;
+        data = getDataByColumns(data as Response, queryColumns);
+      }
 
-      if (datasource?.meta) {
+      // Check if this is needed: meta
+      dispatch({
+        type: RUN_QUERY,
+        payload: {
+          data: data,
+          meta: {
+            fields: meta.fields,
+          },
+        },
+      });
+    };
+
+    const runQuery = () => {
+      const filePath = `./assets/data/${name}/${name}.csv`;
+
+      if (storeMeta) {
         papaparse.parse(filePath, {
           download: true,
           header: true,
           delimiter: ",",
-          complete: (results) => {
-            // Get columns based on the query columns meta field:
-            let { data, meta } = results;
-            const queryColumns = datasource.meta.queryColumnMap[query];
-            if (queryColumns[0] !== "*") {
-              // get data only for the specififed columns;
-              data = (data as Array<Record<string, unknown>>).map((item) => {
-                const obj: Record<string, unknown> = {};
-
-                queryColumns.forEach((key) => {
-                  if (key in item) {
-                    // Checks if query column is present in data
-                    obj[key] = item[key];
-                  }
-                });
-                return obj;
-              });
-            }
-
-            // Check if this is needed: meta
-            dispatch({
-              type: RUN_QUERY,
-              payload: {
-                data: data,
-                meta: {
-                  fields: meta.fields,
-                },
-              },
-            });
-          },
+          complete: onParsingComplete,
           error: (err: unknown) => console.error(err),
         });
       }

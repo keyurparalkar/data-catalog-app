@@ -17,14 +17,18 @@ export const dataReducer = (
 ): GlobalStateProps => {
   switch (actions.type) {
     case RUN_QUERY: {
+      const { data, meta } = actions.payload;
       return {
         ...state,
-        datasource: {
-          ...state.datasource,
-          data: actions.payload.data,
-          meta: {
-            ...state.datasource?.meta,
-            fields: actions.payload.meta.fields,
+        datasources: {
+          ...state.datasources,
+          [state.selectedTable]: {
+            ...state.datasources[state.selectedTable],
+            data: data,
+            meta: {
+              ...state.datasources[state.selectedTable].meta,
+              fields: meta.fields,
+            },
           },
         },
       };
@@ -33,22 +37,31 @@ export const dataReducer = (
     case SELECT_QUERY: {
       return {
         ...state,
-        datasource: {
-          ...state.datasource,
-          meta: {
-            ...state.datasource.meta,
-            query: actions.payload,
+        datasources: {
+          ...state.datasources,
+          [state.selectedTable]: {
+            ...state.datasources[state.selectedTable],
+            meta: {
+              ...state.datasources[state.selectedTable].meta,
+              query: actions.payload,
+            },
           },
         },
       };
     }
 
     case LOAD_META_DATA: {
+      const { metaData, selectedTable } = actions.payload;
+
       return {
         ...state,
-        datasource: {
-          ...state.datasource,
-          meta: actions.payload,
+        datasources: {
+          ...state.datasources,
+          [selectedTable]: {
+            name: selectedTable,
+            data: undefined as any,
+            meta: metaData,
+          },
         },
       };
     }
@@ -56,10 +69,7 @@ export const dataReducer = (
     case SELECT_TABLE: {
       return {
         ...state,
-        datasource: {
-          ...state.datasource,
-          name: actions.payload,
-        },
+        selectedTable: actions.payload,
       };
     }
 

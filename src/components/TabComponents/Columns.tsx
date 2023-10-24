@@ -11,11 +11,12 @@ const columns = [
 ];
 
 const Columns = () => {
-  const { datasource } = useContext(DataContext);
+  const { datasources, selectedTable } = useContext(DataContext);
+  const currentDataSource = datasources[selectedTable];
   let data;
 
-  if (datasource) {
-    data = datasource.meta.fields.map((field) => ({
+  if (currentDataSource) {
+    data = currentDataSource.meta.fields.map((field) => ({
       colName: field,
     }));
   }
@@ -23,7 +24,7 @@ const Columns = () => {
   return (
     <Space direction="vertical">
       <Typography.Text style={{ marginLeft: 5 }}>
-        Columns: {datasource.meta.fields?.length ?? 0}
+        Columns: {currentDataSource.meta.fields?.length ?? 0}
       </Typography.Text>
       <Table
         dataSource={data ?? []}

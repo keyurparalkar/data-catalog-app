@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Space, Table, Typography } from "antd";
 import { useContext } from "react";
 import { DataContext } from "../../store/providers";
 
@@ -14,20 +14,25 @@ const Columns = () => {
   const { datasource } = useContext(DataContext);
   let data;
 
-  if (datasource && "data" in datasource) {
-    data = Object.keys(datasource.data[0]).map((field) => ({
+  if (datasource) {
+    data = datasource.meta.fields.map((field) => ({
       colName: field,
     }));
   }
 
   return (
-    <Table
-      dataSource={data ?? []}
-      columns={columns}
-      pagination={{ pageSize: 20, hideOnSinglePage: true }}
-      scroll={{ y: 200 }}
-      size="small"
-    />
+    <Space direction="vertical">
+      <Typography.Text style={{ marginLeft: 5 }}>
+        Columns: {datasource.meta.fields?.length ?? 0}
+      </Typography.Text>
+      <Table
+        dataSource={data ?? []}
+        columns={columns}
+        pagination={{ pageSize: 20, hideOnSinglePage: true }}
+        scroll={{ y: 200 }}
+        size="small"
+      />
+    </Space>
   );
 };
 

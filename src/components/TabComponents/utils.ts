@@ -4,3 +4,6 @@ export const generateColumns = (fields: string[]) =>
     title: field,
     dataIndex: field,
   }));
+
+export const replaceNewLineChar = (text: string) =>
+  text.replaceAll("\\n", "\n");

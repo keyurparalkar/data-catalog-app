@@ -19,6 +19,7 @@ import QueryData from "./TabComponents/QueryData";
 import { DataContext, DataDispatchContext } from "../store/providers";
 import CheckableTags from "./CheckableTags";
 import { RUN_QUERY, SELECT_QUERY } from "../store/actions";
+import Readme from "./TabComponents/Readme";
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -43,6 +44,11 @@ const tabItems: TabsProps["items"] = [
     key: "2",
     label: "Data",
     children: <QueryData />,
+  },
+  {
+    key: "3",
+    label: "Readme",
+    children: <Readme />,
   },
 ];
 

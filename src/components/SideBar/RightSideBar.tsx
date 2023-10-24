@@ -77,7 +77,6 @@ const InfoCard = ({
 const TableSummary = ({
   rowCount,
   size,
-  columnCount,
   description,
   verified,
   categories,
@@ -90,12 +89,6 @@ const TableSummary = ({
         <Flex vertical>
           <Text style={{ color: "#6A6F85" }}>Rows</Text>
           <Text>{rowCount}</Text>
-        </Flex>
-      </Col>
-      <Col span={8}>
-        <Flex vertical>
-          <Text style={{ color: "#6A6F85" }}>Columns</Text>
-          <Text>{columnCount}</Text>
         </Flex>
       </Col>
       <Col span={8}>
@@ -185,7 +178,6 @@ const RightSider = () => {
     );
   }
 
-  // TODO: Change this later
   return <></>;
 };
 

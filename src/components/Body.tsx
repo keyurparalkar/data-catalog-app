@@ -5,24 +5,19 @@ import { DataContext, DataDispatchContext } from "../store/providers";
 import Container from "./Container";
 import LeftSider from "./SideBar/LeftSideBar";
 import RightSider from "./SideBar/RightSideBar";
+import { fetchMetaData } from "./utils";
 
 const Body = () => {
   const { datasource } = useContext(DataContext);
   const dispatch = useContext(DataDispatchContext);
 
+  const fetchAndStoreMetaData = async (assetName: string) => {
+    const metaData = await fetchMetaData(assetName);
+    dispatch({ type: LOAD_META_DATA, payload: metaData });
+  };
+
   useEffect(() => {
-    (async () => {
-      const filePath = `./assets/data/${
-        datasource?.name ?? "customers"
-      }/metadata.json`;
-      try {
-        const resp = await fetch(filePath);
-        const metaData = await resp.json();
-        dispatch({ type: LOAD_META_DATA, payload: metaData });
-      } catch (err) {
-        console.log({ err });
-      }
-    })();
+    fetchAndStoreMetaData(datasource?.name);
     // eslint-disable-next-line
   }, [datasource?.name]);
 

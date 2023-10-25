@@ -1,4 +1,4 @@
-import { Menu } from "antd";
+import { ConfigProvider, Menu } from "antd";
 import type { MenuProps } from "antd";
 
 import Sider from "antd/es/layout/Sider";
@@ -8,6 +8,11 @@ import { SELECT_TABLE } from "../../store/actions";
 
 const leftSiderStyle: React.CSSProperties = {
   backgroundColor: "white",
+};
+
+const menuStyles: React.CSSProperties = {
+  height: "100vh",
+  fontWeight: "bold",
 };
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -43,14 +48,26 @@ export const LeftSider = () => {
   };
 
   return (
-    <Sider style={leftSiderStyle}>
-      <Menu
-        defaultSelectedKeys={["customers"]}
-        mode="inline"
-        items={items}
-        onClick={handleClick}
-      />
-    </Sider>
+    <ConfigProvider
+      theme={{
+        components: {
+          Menu: {
+            itemSelectedBg: "#0000FF",
+            itemSelectedColor: "white",
+          },
+        },
+      }}
+    >
+      <Sider style={leftSiderStyle}>
+        <Menu
+          defaultSelectedKeys={["customers"]}
+          mode="inline"
+          items={items}
+          onClick={handleClick}
+          style={menuStyles}
+        />
+      </Sider>
+    </ConfigProvider>
   );
 };
 

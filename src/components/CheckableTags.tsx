@@ -1,4 +1,4 @@
-import { Col, Tag } from "antd";
+import { Col, ConfigProvider, Tag } from "antd";
 import { PredefinedQueries, Query } from "../types/queries";
 
 type CheckableTagsProps = {
@@ -17,7 +17,16 @@ const CheckableTags = ({
   };
 
   return (
-    <>
+    <ConfigProvider
+      theme={{
+        components: {
+          Tag: {
+            colorPrimary: "#0000FF",
+            colorPrimaryHover: "#4545f8",
+          },
+        },
+      }}
+    >
       {predefinedQueries.map((query: Query, index: number) => (
         <Col span={7} key={`tag-key-${index}`}>
           <Tag.CheckableTag
@@ -28,7 +37,7 @@ const CheckableTags = ({
           </Tag.CheckableTag>
         </Col>
       ))}
-    </>
+    </ConfigProvider>
   );
 };
 

@@ -1,9 +1,11 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import {
   Button,
   Card,
   Col,
+  ConfigProvider,
   Divider,
+  Empty,
   Flex,
   Layout,
   Row,
@@ -56,58 +58,74 @@ const tabItems: TabsProps["items"] = [
 const Container = () => {
   const { datasources, selectedTable } = useContext(DataContext);
   const dispatch = useContext(DataDispatchContext);
+  const cmRef = useRef<any>(null);
 
-  if (datasources?.[selectedTable]) {
-    const { name, meta: storeMeta } = datasources[selectedTable];
-    const { predefinedQueries, query, queryColumnMap } = storeMeta;
-    const onQueryChange = (query: string) => {
-      dispatch({ type: SELECT_QUERY, payload: query });
-    };
+  if (!datasources?.[selectedTable]) {
+    return <></>;
+  }
 
-    const resetToDefaultQuery = () => {
-      onQueryChange(predefinedQueries[0]);
-    };
+  const { name, meta: storeMeta } = datasources[selectedTable];
+  const { predefinedQueries, query, queryColumnMap } = storeMeta;
+  const onQueryChange = (query: string) => {
+    dispatch({ type: SELECT_QUERY, payload: query });
+  };
 
-    const onParsingComplete = (results: papaparse.ParseResult<unknown>) => {
-      let { data, meta } = results;
-      const queryColumns = queryColumnMap[query];
-      if (queryColumns[0] !== "*") {
-        // get data only for the specififed columns;
-        data = getDataByColumns(data as Response, queryColumns);
-      }
+  const resetToDefaultQuery = () => {
+    onQueryChange(predefinedQueries[0]);
+  };
 
-      // Check if this is needed: meta
-      dispatch({
-        type: RUN_QUERY,
-        payload: {
-          data: data,
-          meta: {
-            fields: meta.fields,
+  const onParsingComplete = (results: papaparse.ParseResult<unknown>) => {
+    let { data, meta } = results;
+    const queryColumns = queryColumnMap[query];
+    if (queryColumns[0] !== "*") {
+      // get data only for the specififed columns;
+      data = getDataByColumns(data as Response, queryColumns);
+    }
+
+    // Check if this is needed: meta
+    dispatch({
+      type: RUN_QUERY,
+      payload: {
+        data: data,
+        meta: {
+          fields: meta.fields,
+        },
+      },
+    });
+  };
+
+  const runQuery = () => {
+    const filePath = `./assets/data/${name}/${name}.csv`;
+
+    if (storeMeta) {
+      papaparse.parse(filePath, {
+        download: true,
+        header: true,
+        delimiter: ",",
+        complete: onParsingComplete,
+        error: (err: unknown) => console.error(err),
+      });
+    }
+  };
+
+  return (
+    <ConfigProvider
+      theme={{
+        components: {
+          Tabs: {
+            itemSelectedColor: "#0000FF",
+            inkBarColor: "#0000FF",
           },
         },
-      });
-    };
-
-    const runQuery = () => {
-      const filePath = `./assets/data/${name}/${name}.csv`;
-
-      if (storeMeta) {
-        papaparse.parse(filePath, {
-          download: true,
-          header: true,
-          delimiter: ",",
-          complete: onParsingComplete,
-          error: (err: unknown) => console.error(err),
-        });
-      }
-    };
-
-    return (
+      }}
+      renderEmpty={() => <Empty />}
+    >
       <Layout.Content style={contentStyle}>
         <Card title="Query">
           <Row>
             <Col span={16}>
               <CodeMirror
+                ref={cmRef}
                 height="100px"
                 value={query}
                 style={{ outline: "1px solid #cacaca" }}
@@ -117,7 +135,11 @@ const Container = () => {
             <Col span={1} />
             <Col span={7}>
               <Flex vertical justify={"space-between"} gap="middle">
-                <Button type="primary" onClick={runQuery}>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#0000FF" }}
+                  onClick={runQuery}
+                >
                   Run Query
                 </Button>
                 <Button onClick={resetToDefaultQuery}>Reset</Button>
@@ -136,10 +158,8 @@ const Container = () => {
           <Tabs items={tabItems} />
         </Card>
       </Layout.Content>
-    );
-  }
-
-  return <></>;
+    </ConfigProvider>
+  );
 };
 
 export default Container;

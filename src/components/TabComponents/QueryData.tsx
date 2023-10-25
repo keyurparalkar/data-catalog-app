@@ -20,6 +20,7 @@ const QueryData = () => {
       pagination={{ pageSize: 4 }}
       scroll={{ x: 400 }}
       size="small"
+      rowKey={(rec) => rec[Object.keys(rec)[0]]}
     />
   );
 };

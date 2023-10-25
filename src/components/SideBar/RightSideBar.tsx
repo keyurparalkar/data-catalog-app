@@ -1,11 +1,14 @@
-import { Avatar, Card, Col, Flex, Row, Space, Tag, Typography } from "antd";
-import { UserOutlined, CheckCircleTwoTone } from "@ant-design/icons";
-import dayjs from "dayjs";
+import { Card, Col, Flex, Row, Space, Tag, Typography } from "antd";
+import {
+  UserOutlined,
+  CheckCircleTwoTone,
+  CommentOutlined,
+} from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
 import { ReactElement, useContext } from "react";
 import { DataContext } from "../../store/providers";
 import { EventDescriptor, MetaData } from "../../types/datasources";
-import { tagColorMap } from "./utils";
+import { getDateInFormat, tagColorMap } from "./utils";
 
 const { Text } = Typography;
 
@@ -68,7 +71,7 @@ const InfoCard = ({
         </Space>
       </Col>
       <Col span={12} style={{ textAlign: "end" }}>
-        <Text>{dayjs(timestamp).format("MMM DD, YYYY")}</Text>
+        <Text>{getDateInFormat(timestamp)}</Text>
       </Col>
     </Row>
   </Card>
@@ -82,86 +85,93 @@ const TableSummary = ({
   categories,
   owners,
   comments,
-}: TableSummaryProps) => (
-  <Space direction="vertical" size="middle" style={{ padding: 5 }}>
-    <Row>
-      <Col span={8}>
-        <Flex vertical>
-          <Text style={{ color: "#6A6F85" }}>Rows</Text>
-          <Text>{rowCount}</Text>
+}: TableSummaryProps) => {
+  return (
+    <Space direction="vertical" size="middle" style={{ padding: 5 }}>
+      <Row>
+        <Col span={8}>
+          <Flex vertical>
+            <Text style={{ color: "#6A6F85" }}>Rows</Text>
+            <Text>{rowCount}</Text>
+          </Flex>
+        </Col>
+        <Col span={8}>
+          <Flex vertical>
+            <Text style={{ color: "#6A6F85" }}>Size</Text>
+            <Text>{size}</Text>
+          </Flex>
+        </Col>
+      </Row>
+
+      <Row>
+        <Flex justify="space-between" style={{ minWidth: "50%" }}>
+          <Space>
+            <Text style={{ color: "#6A6F85" }}>Owners</Text>
+            {owners.map((owner, index) => (
+              <Tag
+                style={{ borderRadius: "10px", backgroundColor: "white" }}
+                key={`tag-${owner}-${index}`}
+              >
+                <UserOutlined twoToneColor="#eb2f96" />
+                <Text>{owner}</Text>
+              </Tag>
+            ))}
+          </Space>
         </Flex>
-      </Col>
-      <Col span={8}>
+      </Row>
+
+      <Row>
         <Flex vertical>
-          <Text style={{ color: "#6A6F85" }}>Size</Text>
-          <Text>{size}</Text>
+          <Text style={{ color: "#6A6F85" }}>Description</Text>
+          <Text>{description}</Text>
         </Flex>
-      </Col>
-    </Row>
+      </Row>
 
-    <Row>
-      <Flex justify="space-between" style={{ minWidth: "50%" }}>
-        <Space>
-          <Text style={{ color: "#6A6F85" }}>Owners</Text>
-          {owners.map((owner) => (
-            <Tag style={{ borderRadius: "10px", backgroundColor: "white" }}>
-              <UserOutlined twoToneColor="#eb2f96" />
-              <Text>{owner}</Text>
-            </Tag>
-          ))}
-        </Space>
-      </Flex>
-    </Row>
+      <Row>
+        <Flex vertical>
+          <Text style={{ color: "#6A6F85" }}>Tags</Text>
+          <Space>
+            {categories.map((category, idx) => (
+              <Tag color={tagColorMap[idx]} key={`tag-${category}-${idx}`}>
+                {category}
+              </Tag>
+            ))}
+          </Space>
+        </Flex>
+      </Row>
 
-    <Row>
-      <Flex vertical>
-        <Text style={{ color: "#6A6F85" }}>Description</Text>
-        <Text>{description}</Text>
-      </Flex>
-    </Row>
+      {verified && (
+        <InfoCard
+          {...verified}
+          cardTitle="Verified"
+          cardType="verify"
+          titleIcon={<CheckCircleTwoTone twoToneColor="#4eb91d" />}
+        />
+      )}
 
-    <Row>
-      <Flex vertical>
-        <Text style={{ color: "#6A6F85" }}>Tags</Text>
-        <Space>
-          {categories.map((category, idx) => (
-            <Tag color={tagColorMap[idx]}>{category}</Tag>
-          ))}
-        </Space>
-      </Flex>
-    </Row>
-
-    {verified && (
-      <InfoCard
-        {...verified}
-        cardTitle="Verified"
-        cardType="verify"
-        titleIcon={<CheckCircleTwoTone twoToneColor="#4eb91d" />}
-      />
-    )}
-
-    <Row>
-      <Text style={{ color: "#6A6F85" }}>Comments</Text>
-      <Flex vertical style={{ height: 150, overflowY: "scroll" }}>
-        <Space direction="vertical">
-          {comments.map(({ description, author, timestamp }) => (
-            <Card>
-              <Card.Meta
-                avatar={
-                  <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
-                }
-                title={description}
-                description={`${author} ${dayjs(timestamp).format(
-                  "MMM DD, YYYY"
-                )}`}
-              />
-            </Card>
-          ))}
-        </Space>
-      </Flex>
-    </Row>
-  </Space>
-);
+      <Row>
+        <Text style={{ color: "#6A6F85" }}>Comments</Text>
+        <Flex vertical style={{ height: 150, overflowY: "scroll" }}>
+          <Space direction="vertical">
+            {comments.map(({ description, author, timestamp }, index) => (
+              <Card key={`tag-${author}-${index}`}>
+                <Card.Meta
+                  avatar={<CommentOutlined style={{ fontSize: "26px" }} />}
+                  title={description}
+                  description={
+                    <Text
+                      style={{ color: "#545454" }}
+                    >{`${author} ${getDateInFormat(timestamp)}`}</Text>
+                  }
+                />
+              </Card>
+            ))}
+          </Space>
+        </Flex>
+      </Row>
+    </Space>
+  );
+};
 
 const RightSider = () => {
   const { datasources, selectedTable } = useContext(DataContext);

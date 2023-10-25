@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import {
   Button,
   Card,
@@ -22,7 +22,7 @@ import { DataContext, DataDispatchContext } from "../store/providers";
 import CheckableTags from "./CheckableTags";
 import { RUN_QUERY, SELECT_QUERY } from "../store/actions";
 import Readme from "./TabComponents/Readme";
-import { getDataByColumns, Response } from "./utils";
+import { getDataByColumns, getRemoteDataUrl, Response } from "./utils";
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -58,7 +58,6 @@ const tabItems: TabsProps["items"] = [
 const Container = () => {
   const { datasources, selectedTable } = useContext(DataContext);
   const dispatch = useContext(DataDispatchContext);
-  const cmRef = useRef<any>(null);
 
   if (!datasources?.[selectedTable]) {
     return <></>;
@@ -95,7 +94,8 @@ const Container = () => {
   };
 
   const runQuery = () => {
-    const filePath = `./assets/data/${name}/${name}.csv`;
+    // const filePath = `./assets/data/${name}/${name}.csv`;
+    const filePath = getRemoteDataUrl(name);
 
     if (storeMeta) {
       papaparse.parse(filePath, {
@@ -125,7 +125,6 @@ const Container = () => {
           <Row>
             <Col span={16}>
               <CodeMirror
-                ref={cmRef}
                 height="100px"
                 value={query}
                 style={{ outline: "1px solid #cacaca" }}

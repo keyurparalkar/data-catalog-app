@@ -24,3 +24,7 @@ export const getDataByColumns = (data: Response, queryColumns: string[]) => {
     return obj;
   });
 };
+
+const BASE_URL =
+  "https://raw.githubusercontent.com/graphql-compose/graphql-compose-examples/master/examples/northwind/data/csv";
+export const getRemoteDataUrl = (name: string) => `${BASE_URL}/${name}.csv`;

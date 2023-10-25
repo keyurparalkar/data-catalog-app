@@ -1,0 +1,36 @@
+{
+    "comments": [
+        {
+            "description": "This table is linked to inventory directory",
+            "author": "Akash",
+            "timestamp": "2023-10-22"
+        },
+        {
+            "description": "Do not use this source in PRODUCTION",
+            "author": "Carl",
+            "timestamp": "2023-10-19"
+        }
+    ],
+    "description": "Table that contains information about Customers",
+    "owners": ["Akash", "Carl"],
+    "categories": ["Inventory", "Ecommerce"],
+    "verified": {
+        "description": "This table is verfied",
+        "author": "Akash",
+        "timestamp": "2023-10-22"
+    },
+    "fields": [],
+    "query": "SELECT * FROM Suppliers;",
+    "predefinedQueries": [
+        "SELECT * FROM Suppliers;",
+        "SELECT supplierID, companyName, phone FROM Suppliers;"
+      ],
+    "queryColumnMap": {
+        "SELECT * FROM Suppliers;": ["*"],
+        "SELECT supplierID, companyName, phone FROM Suppliers;":["supplierID", "companyName", "phone"]
+    },
+    "size": "5 kB",
+    "rowCount": 29,
+    "columnCount": 15,
+    "documentation": "# Supplier Information Table\\n\\n## Introduction\\n\\nWelcome to our supplier database! This README provides an overview of the structure and purpose of the Supplier Information Table. As a supplier, it's important to understand how this table is organized and what each column represents.\\n\\n## Table Structure\\n\\nThe Supplier Information Table is organized into the following columns:\\n\\n1. **Supplier Name**: This column contains the name of your company or organization.\\n\\n2. **Contact Information**: Here, you can find the contact details for your primary point of contact, including email, phone number, and mailing address.\\n\\n3. **Product/Service Category**: This column specifies the category of products or services your company provides. It helps us classify and organize our suppliers efficiently.\\n\\n4. **Payment Terms**: In this column, you'll find information about the payment terms and conditions for your invoices. Please review this section to understand our payment processes.\\n\\n5. **Contract Expiry Date**: If you have an existing contract with us, this column will show the expiration date of that contract. Make sure to renew your contract in a timely manner.\\n\\n6. **Performance Ratings**: This column displays performance ratings based on our evaluations. It's essential for you to review and work towards improving your performance rating.\\n\\n## How to Use\\n\\nHere's how suppliers can use this table effectively:\\n\\n- **Review and Update**: Please review the information in this table regularly and ensure it's up to date. If any changes are necessary, contact our procurement department to update your details.\\n\\n- **Performance Improvement**: If your performance rating is lower than desired, take actions to improve it. This may lead to more opportunities and better collaboration with us.\\n\\n- **Contract Renewal**: If your contract is nearing its expiration date, make sure to initiate discussions with our team for a contract renewal.\\n\\n## Contact Information\\n\\nIf you have any questions or need assistance, please don't hesitate to contact our procurement department at [procurement@example.com](mailto:procurement@example.com).\\n\\nWe appreciate your partnership and look forward to a successful business relationship.\\n"
+}

@@ -21,6 +21,9 @@ const QueryData = () => {
       scroll={{ x: 400 }}
       size="small"
       rowKey={(rec) => rec[Object.keys(rec)[0]]}
+      style={{
+        whiteSpace: "nowrap",
+      }}
     />
   );
 };

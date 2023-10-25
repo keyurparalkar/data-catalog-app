@@ -2,21 +2,21 @@
     "comments": [
         {
             "description": "Notify before making changes",
-            "author": "Emilia",
+            "author": "Loius",
             "timestamp": "2023-10-22"
         },
         {
             "description": "Do not use this source in PRODUCTION",
-            "author": "Ron",
+            "author": "Racheal",
             "timestamp": "2023-10-19"
         }
     ],
     "description": "Table that contains information about Customers",
-    "owners": ["Emilia", "Ron"],
+    "owners": ["Loius", "Racheal"],
     "categories": ["PII", "Customers"],
     "verified": {
         "description": "This table is verfied",
-        "author": "Emilia",
+        "author": "Loius",
         "timestamp": "2023-10-22"
     },
     "fields": [],

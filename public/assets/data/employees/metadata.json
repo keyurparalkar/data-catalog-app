@@ -1,0 +1,36 @@
+{
+    "comments": [
+        {
+            "description": "This table is linked to employees directory",
+            "author": "Harvey",
+            "timestamp": "2023-10-2"
+        },
+        {
+            "description": "Do not use this source in PRODUCTION",
+            "author": "Jessica",
+            "timestamp": "2023-8-19"
+        }
+    ],
+    "description": "Table that contains information about Employees",
+    "owners": ["Harvey", "Jessica"],
+    "categories": ["Legal", "HR", "Employees"],
+    "verified": {
+        "description": "This table is verified",
+        "author": "Harvey",
+        "timestamp": "2023-10-22"
+    },
+    "fields": [],
+    "query": "SELECT * FROM Employees;",
+    "predefinedQueries": [
+        "SELECT * FROM Employees;",
+        "SELECT employeeID, firstName, phone FROM Employees;"
+    ],
+    "queryColumnMap": {
+        "SELECT * FROM Employees;": ["*"],
+        "SELECT employeeID, firstName, phone FROM Employees;": ["employeeID", "firstName", "phone"]
+    },
+    "size": "11 kB",
+    "rowCount": 22,
+    "columnCount": 11,
+    "documentation": "# Employees Table README\\n\\n## Table Description\\n\\nThe \\'Employees\\' table is a crucial part of our organization's database. It stores essential information about our employees, which includes details such as employee ID, name, contact information, department, and more.\\n\\n## Table Fields\\n\\nThe table consists of the following fields:\\n\\n- **Employee ID**: A unique identifier for each employee.\\n- **First Name**: The employee's first name.\\n- **Last Name**: The employee's last name.\\n- **Date of Birth**: The employee's date of birth.\\n- **Email**: The employee's primary email address.\\n- **Phone Number**: The employee's contact phone number.\\n- **Department**: The department to which the employee is assigned.\\n- **Position**: The employee's job position or title.\\n- **Hire Date**: The date on which the employee was hired.\\n- **Salary**: The employee's current salary.\\n- **Manager ID**: A reference to the employee's manager (self-referential).\\n\\n## Primary Key\\n\\nThe primary key of this table is the **Employee ID** field, ensuring that each employee has a unique identifier.\\n\\n## Relationships\\n\\nThe **Manager ID** field establishes a self-referential relationship, allowing us to track the reporting hierarchy within the organization. An employee's manager is identified by their **Employee ID**, making it easy to determine the chain of command.\\n\\n## Use Cases\\n\\n- This table is used for HR purposes, including managing employee records, tracking salaries, and maintaining personnel information.\\n- It can be utilized to generate reports on departmental or organizational structures.\\n- Employee data can be used for payroll processing.\\n\\n## Example Query\\n\\nTo retrieve a list of employees in the \\'Sales\\' department, you can use the following SQL query:\\n"
+}

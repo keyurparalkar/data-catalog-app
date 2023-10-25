@@ -40,13 +40,13 @@ const config: SQLConfig = {
 const tabItems: TabsProps["items"] = [
   {
     key: "1",
-    label: "Columns",
-    children: <Columns />,
+    label: "Data",
+    children: <QueryData />,
   },
   {
     key: "2",
-    label: "Data",
-    children: <QueryData />,
+    label: "Columns",
+    children: <Columns />,
   },
   {
     key: "3",

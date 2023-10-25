@@ -32,3 +32,5 @@ Each table can be selected from the left side bar that displays the following in
 ## Performance:
 
 The performance of the application was measured with Lighthouse with page load time of: `0.8s`
+
+<img src="public/performance-snapshot.png" alt="performance-snapshot">
